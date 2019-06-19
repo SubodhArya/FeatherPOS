@@ -87,7 +87,10 @@ Widget updateCategoryWidget(String merchantID){
                 child: new ListTile(
                   leading: new CircleAvatar(
                     backgroundColor: Colors.lightGreenAccent,
-                    child: new Text('${content[position]['categoryId']}'),
+                    child: new Text('Id: ${content[position]['categoryId']}',
+                      style: new TextStyle(
+                        fontSize: 13.0,
+                      ),),
                   ),
                   title: new Text(
                       "${content[position]['name']}"),

@@ -7,7 +7,7 @@ import 'ticketing.dart';
 import 'categoryDetails.dart';
 class Menu extends StatelessWidget {
   static const String routeName = "/menu";
-
+  //final String organisation;
   final String username;
   final String merchantId;
   final String designation;
@@ -120,10 +120,47 @@ class Menu extends StatelessWidget {
             ],
           ),
         ),
-        body: new Container(
-          child: new Center(
-            child: new Text("Menu Page"),
-          ),
+        body:new ListView(
+          children: <Widget>[
+            new Padding(
+              padding: EdgeInsets.all(15.0),
+            ),
+
+            new Center(
+              child: new FlatButton(
+                child: new Text("Use the Menu icon for Navigation "),
+
+                onPressed: (){},
+                color: Colors.grey,
+              ),
+            ),
+
+            new Padding(
+              padding: EdgeInsets.all(15.0),
+            ),
+            new Center(
+              child: new Image.asset('images/feather.png'),
+            ),
+            new Padding(
+              padding: EdgeInsets.all(15.0),
+            ),
+            new Center(
+              child: new Text("Feather App©",style: new TextStyle(fontWeight: FontWeight.w800),),
+            ),
+            new Padding(
+              padding: EdgeInsets.all(15.0),
+            ),
+            new Center(
+              child: new Text("In Association with ",style: new TextStyle(fontWeight: FontWeight.w500),),
+            ),
+            new Padding(
+              padding: EdgeInsets.all(15.0),
+            ),
+            new Center(
+              child: new Image.asset('images/ncr.png'),
+            ),
+
+          ],
         ),
       ); //
   }
@@ -216,10 +253,47 @@ class Menu extends StatelessWidget {
             ],
           ),
         ),
-        body: new Container(
-          child: new Center(
-            child: new Text("Menu Page"),
-          ),
+        body:new ListView(
+          children: <Widget>[
+            new Padding(
+              padding: EdgeInsets.all(15.0),
+            ),
+
+            new Center(
+              child: new FlatButton(
+                child: new Text("Use the Menu icon for Navigation "),
+
+                onPressed: (){},
+                color: Colors.grey,
+              ),
+            ),
+
+            new Padding(
+              padding: EdgeInsets.all(15.0),
+            ),
+            new Center(
+              child: new Image.asset('images/feather.png'),
+            ),
+            new Padding(
+              padding: EdgeInsets.all(15.0),
+            ),
+            new Center(
+              child: new Text("Feather App©",style: new TextStyle(fontWeight: FontWeight.w800),),
+            ),
+            new Padding(
+              padding: EdgeInsets.all(15.0),
+            ),
+            new Center(
+              child: new Text("In Association with ",style: new TextStyle(fontWeight: FontWeight.w500),),
+            ),
+            new Padding(
+              padding: EdgeInsets.all(15.0),
+            ),
+            new Center(
+              child: new Image.asset('images/ncr.png'),
+            ),
+
+          ],
         ),
       ); //
     }
