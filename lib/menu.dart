@@ -58,7 +58,13 @@ class Menu extends StatelessWidget {
                   trailing: new Icon(Icons.shopping_basket),
                   onTap: () {
                     Navigator.of(context).pop();
-                    Navigator.of(context).pushNamed(ProductDetails.routeName);
+                    //Navigator.of(context).pushNamed(ProductDetails.routeName);
+                    Navigator.push(context, new MaterialPageRoute(
+                        builder: (context) {
+                          return ProductDetails(
+                            title: "Employee details", merchantId: merchantId,);
+                        }
+                    ));
                   }),
               new Divider(),
               new ListTile(

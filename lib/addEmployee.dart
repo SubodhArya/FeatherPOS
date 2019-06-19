@@ -54,7 +54,7 @@ class _AddEmployeeState extends State<AddEmployee> {
 
     Map<String,dynamic> ret= await addEmployeeAPI(context,_name,_dateofjoining,_phone,_email,_username,_password,_salary,widget.merchantId);
     print(ret);
-    if (ret['employeeId'] != null) {
+    if (ret['employeeId'] != null && ret['employeeId'] != 0) {
       setState(() {
         _progressBarActive = false;
       });

@@ -124,7 +124,7 @@ class _PosHomeState extends State<PosHome> {
   }
   performLogin() async{
     //requestLoginAPI(context, _email, _password);
-    Map<String,dynamic> ret= await loginAPI(context,_merchantID,_username,_password);
+    Map<String,dynamic> ret= await loginAPI(context,_username,_password);
     print(ret);
     if(ret['designation']!=null) {
       setState(() {
@@ -132,6 +132,7 @@ class _PosHomeState extends State<PosHome> {
       });
      // Navigator.pushNamed(context, Menu.routeName,
        //   arguments: _email);
+      _merchantID=ret['merchantId'].toString();
       Navigator.push(context, new MaterialPageRoute(
           builder: (context){
             return Menu(username:_username,merchantId: _merchantID,designation:ret['designation']);
@@ -176,7 +177,7 @@ class _PosHomeState extends State<PosHome> {
           child: new ListView(
             children: <Widget>[
               new Image.asset('images/ncr.png'),
-              new TextFormField(
+             /* new TextFormField(
                 decoration: new InputDecoration(
                   labelText: 'Merchant ID',
                   hintText: 'Enter merchant ID',
@@ -184,7 +185,7 @@ class _PosHomeState extends State<PosHome> {
                 //validator: (val)=> !val.contains('@')?'Invalid email':null,
                 onSaved: (val)=>_merchantID=val,
                 initialValue: null,
-              ),
+              ),*/
               new TextFormField(
                 decoration: new InputDecoration(
                   labelText: 'Username',
@@ -236,9 +237,9 @@ class _PosHomeState extends State<PosHome> {
   'username': 'username',
   'password': 'password',
 };*/
-Future<Map<String,dynamic>> loginAPI(BuildContext context,String merchantID,String username,String password) async {
+Future<Map<String,dynamic>> loginAPI(BuildContext context,String username,String password) async {
   //String apiurl='https://jsonplaceholder.typicode.com/posts';
-  String apiurl= 'https://webapplication220190616025624.azurewebsites.net/Employee/ValidateLogin/$merchantID';
+  String apiurl= 'https://webapplication220190616025624.azurewebsites.net/Employee/ValidateLogin';
   http.Response response= await http.post(
       apiurl,
       body:jsonEncode( {

@@ -47,7 +47,7 @@ class _AddCategoryState extends State<AddCategory> {
 
     Map<String,dynamic> ret= await addCategoryAPI(context,_name,_description,widget.merchantId);
     print(ret);
-    if (ret['categoryId'] != null) {
+    if ( ret['categoryId'] != 0 && ret['categoryId'] != null) {
       setState(() {
         _progressBarActive = false;
       });
