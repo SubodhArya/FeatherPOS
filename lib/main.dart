@@ -159,6 +159,12 @@ class _PosHomeState extends State<PosHome> {
     return Scaffold(
       key: scaffoldKey,
       appBar: new AppBar(
+        leading: IconButton(
+          icon: new Icon(Icons.home),
+          onPressed: (){
+            print('nothing');
+          },
+        ),
         title: new Text('POS Login'),
         centerTitle: true,
         backgroundColor: Colors.deepPurple ,

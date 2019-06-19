@@ -4,6 +4,7 @@ import 'customerDetails.dart';
 import 'employeeDetails.dart';
 import 'productDetails.dart';
 import 'ticketing.dart';
+import 'categoryDetails.dart';
 class Menu extends StatelessWidget {
   static const String routeName = "/menu";
 
@@ -38,6 +39,20 @@ class Menu extends StatelessWidget {
                 ),
 
               ),
+              new ListTile(
+                  title: new Text('Category Details'),
+                  trailing: new Icon(Icons.category),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    //Navigator.of(context).pushNamed(ProductDetails.routeName);
+                    Navigator.push(context, new MaterialPageRoute(
+                        builder: (context) {
+                          return CategoryDetails(
+                            title: "Employee details", merchantId: merchantId,);
+                        }
+                    ));
+                  }),
+              new Divider(),
               new ListTile(
                   title: new Text('Product Details'),
                   trailing: new Icon(Icons.shopping_basket),
@@ -177,7 +192,9 @@ class Menu extends StatelessWidget {
                 title: new Text('Logout'),
                 trailing: new Icon(Icons.power_settings_new),
                 onTap: () {
-                  Navigator.of(context).pushNamed(PosHome.routeName);
+                  //Navigator.of(context).pushNamed(PosHome.routeName);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                 },
               ),
 

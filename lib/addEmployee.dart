@@ -183,8 +183,8 @@ class _AddEmployeeState extends State<AddEmployee> {
                   //fillColor: Colors.green
                 ),
                 validator: (val) {
-                  if(val.length<6) {
-                    return " Address should be genuine";
+                  if(val.length==0) {
+                    return " Salary should be genuine";
                   }else{
                     return null;
                   }
