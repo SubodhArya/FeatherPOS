@@ -87,6 +87,7 @@ class _PosHomeState extends State<PosHome> {
   final formKey = new GlobalKey<FormState>();
   String _username;
   String _merchantID;
+  String _employeeID;
   String _password;
   /*Map<String, String> body = {
     'username': tgh_email,
@@ -133,9 +134,10 @@ class _PosHomeState extends State<PosHome> {
      // Navigator.pushNamed(context, Menu.routeName,
        //   arguments: _email);
       _merchantID=ret['merchantId'].toString();
+      _employeeID=ret['employeeId'].toString();
       Navigator.push(context, new MaterialPageRoute(
           builder: (context){
-            return Menu(username:_username,merchantId: _merchantID,designation:ret['designation'],organization: ret['organization'],name: ret['name'],);
+            return Menu(username:_username,merchantId: _merchantID,designation:ret['designation'],organization: ret['organization'],name: ret['name'],employeeId: _employeeID,);
           }
       ));
       formKey.currentState.reset();

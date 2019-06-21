@@ -31,7 +31,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         children: <Widget>[
           Padding( padding: EdgeInsets.all(15.0),),
           new RaisedButton(
-            child: new Text('Select Category to display products:',style: new TextStyle(fontSize: 20.0),),
+            child: new Text('Select Category to display products',style: new TextStyle(fontSize: 20.0),),
             elevation: 2.0,
             color: Colors.lime,
             textColor: Colors.white,

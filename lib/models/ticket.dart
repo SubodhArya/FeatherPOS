@@ -64,7 +64,14 @@ class Ticket{
     this._productname=map['productname'];
   }
 
-
+  Map<String,dynamic> toTicketMap(){
+    var map=Map<String,dynamic>();
+    map['ProductId']=_productid;
+    map['Quantity']=_quantity;
+    map['Price']=rate;
+    map['SubTotal']=subtotal;
+    return map;
+  }
 
 
 

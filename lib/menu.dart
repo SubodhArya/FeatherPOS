@@ -12,9 +12,10 @@ class Menu extends StatelessWidget {
   final String organization;
   final String username;
   final String name;
+  final String employeeId;
   final String merchantId;
   final String designation;
-  Menu({this.username,this.name,this.merchantId,this.designation,this.organization});
+  Menu({this.username,this.name,this.merchantId,this.designation,this.organization,this.employeeId});
 
   DatabaseHelper databaseHelper = new DatabaseHelper();
   void truncate() async{
@@ -99,13 +100,13 @@ class Menu extends StatelessWidget {
                     Navigator.push(context, new MaterialPageRoute(
                         builder: (context) {
                           return Ticketing(
-                            title: "Employee details", merchantId: merchantId,);
+                            title: "Employee details", merchantId: merchantId,employeeId: employeeId,);
                         }
                     ));
 
 
                   }
-              ),
+              ),/* TO BE IMPLEMENTED FOR CUSTOMER DETAILS
               new Divider(),
               new ListTile(
                   title: new Text('Customer Details'),
@@ -114,7 +115,7 @@ class Menu extends StatelessWidget {
                     Navigator.of(context).pop();
                     Navigator.of(context).pushNamed(CustomerDetails.routeName);
                   }
-              ),
+              ),*/
               new Divider(),
               new ListTile(
                 title: new Text('Logout'),
@@ -148,7 +149,7 @@ class Menu extends StatelessWidget {
                 child: new Text("Use the Menu icon for Navigation "),
 
                 onPressed: (){},
-                color: Colors.grey,
+                color: Colors.amberAccent,
               ),
             ),
 

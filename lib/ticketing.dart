@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:poslogin/billing.dart';
 import 'package:poslogin/ticketing_detail.dart';
 import 'models/ticket.dart';
 import 'utils/database_helper.dart';
@@ -14,14 +15,19 @@ class Ticketing extends StatefulWidget {
   static const String routeName = "/ticketing";
   final String title;
   final String merchantId;
-  Ticketing({this.title,this.merchantId});
+  final String employeeId;
+
+
+  Ticketing({this.title,this.merchantId,this.employeeId});
   @override
   _TicketingState createState() => _TicketingState();
 }
 
 class _TicketingState extends State<Ticketing> {
+
   DatabaseHelper databaseHelper = new DatabaseHelper();
   List<Ticket> ticketList;
+  double total=0.0;
   int count =0;
   @override
   Widget build(BuildContext context) {
@@ -33,7 +39,50 @@ class _TicketingState extends State<Ticketing> {
       appBar: new AppBar(
         title: new Text(' Ticketing Details'),
       ),
-      body: getTicketsListView(),
+      body: ListView(
+        children: <Widget>[
+          new Center(
+            child: FlatButton(
+              child:  Text("ADD ITEMS FOR BILLING",style: TextStyle(fontSize: 15.0),),
+              color: Colors.white30,
+              onPressed: (){},
+            ),
+          ),
+          new Container(
+            height: (MediaQuery.of(context).size.height)-250.0,
+            child: getTicketsListView(),
+          ),
+          new Center(
+            child: FlatButton(
+              child:  Text("Total : ₹ $total"),
+              color: Colors.lightGreen,
+              onPressed: (){},
+            ),
+          ),
+          new Center(
+            child: RaisedButton(
+              elevation: 3.0,
+              child:  Text("SUBMIT"),
+              color: Colors.deepOrangeAccent,
+              onPressed: ()async {
+                if (ticketList.length != 0) {
+                  bool result = await Navigator.push(
+                      context, new MaterialPageRoute(
+                      builder: (context) {
+                        return Billing(merchantId: widget.merchantId,
+                          employeeId: widget.employeeId,
+                          ticketList: ticketList,);
+                      }
+                  ));
+                  if (result == true) {
+                    updateListView();
+                  }
+                }
+              }
+            ),
+          ),
+        ],
+      ),
       floatingActionButton: new FloatingActionButton(
         onPressed: (){
           navigateToDetail(Ticket('',0 ,1,0,0 ,'' ),'Add Details',widget.merchantId);
@@ -116,18 +165,25 @@ class _TicketingState extends State<Ticketing> {
         setState(() {
           this.ticketList=ticketList;
           this.count=ticketList.length;
+          total=0;
+          updateTotal();
         });
       });
     });
   }
 
-
+  void updateTotal(){
+    for(int i=0;i<ticketList.length;i++){
+      total = total + ticketList[i].subtotal;
+    }
+  }
 
   ListView getTicketsListView(){
     TextStyle titleStyle = Theme.of(context).textTheme.subhead;
     return new ListView.builder(
       itemCount: count,
       itemBuilder: (BuildContext context, int position){
+       // total = total + this.ticketList[position].subtotal;
         return Card(
           color: Colors.white,
           elevation: 2.0 ,

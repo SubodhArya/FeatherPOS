@@ -328,19 +328,21 @@ class _TicketingDetailState extends State<TicketingDetail> {
 
 
   void _save() async{
-    moveToLastScreen();
-
-    ticket.date= DateFormat.yMMMd().format(DateTime.now());
-    int result;
-    if(ticket.id!=null){ //update
-      result= await helper.updateTicket(ticket);
-    }else{//new item insertion
-       result =await helper.insertTicket(ticket);
-    }
-    if(result!=0){
-      _showAlertDialog('Status','item saved succesfully');
-    }else{
-      _showAlertDialog('Status',' Problem saving item');
+    if(ticket.productname.length>1) {
+      moveToLastScreen();
+      ticket.productid = selectedTicketJson.productId;
+      ticket.date = DateFormat.yMMMd().format(DateTime.now());
+      int result;
+      if (ticket.id != null) { //update
+        result = await helper.updateTicket(ticket);
+      } else { //new item insertion
+        result = await helper.insertTicket(ticket);
+      }
+      if (result != 0) {
+        _showAlertDialog('Status', 'item saved succesfully');
+      } else {
+        _showAlertDialog('Status', ' Problem saving item');
+      }
     }
   }
 
