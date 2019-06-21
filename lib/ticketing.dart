@@ -9,27 +9,12 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 
 
-/*class Ticketing extends StatelessWidget {
-  static const String routeName = "/ticketing";
-  final String title;
-  Ticketing({this.title});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: new AppBar(
-        title: new Text(' Ticketing Details'),
-      ),
-      body: new Center(
-        child: new Text('Ticketing Details '),
-      ),
-    );
-  }
-}
-*/
+
 class Ticketing extends StatefulWidget {
   static const String routeName = "/ticketing";
   final String title;
-  Ticketing({this.title});
+  final String merchantId;
+  Ticketing({this.title,this.merchantId});
   @override
   _TicketingState createState() => _TicketingState();
 }
@@ -51,7 +36,7 @@ class _TicketingState extends State<Ticketing> {
       body: getTicketsListView(),
       floatingActionButton: new FloatingActionButton(
         onPressed: (){
-          navigateToDetail(Ticket('',0 ,1,0,0 ,'' ),'Add Details');
+          navigateToDetail(Ticket('',0 ,1,0,0 ,'' ),'Add Details',widget.merchantId);
           /*debugPrint('FAB Clicked');
           Navigator.pushNamed(context, TicketingDetail.routeName,arguments: 'Add Details'); */
         },
@@ -62,11 +47,11 @@ class _TicketingState extends State<Ticketing> {
   }
 
 
-  void navigateToDetail(Ticket ticket,String title) async{
+  void navigateToDetail(Ticket ticket,String title,String mercahntId) async{
    // Navigator.pushNamed(context, TicketingDetail.routeName,arguments: ticket,title);
      bool result=await Navigator.push(context, new MaterialPageRoute(
       builder: (context){
-        return TicketingDetail(ticket: ticket,title: title,);
+        return TicketingDetail(ticket: ticket,title: title,merchantId: mercahntId,);
       }
     ));
      if(result==true){
@@ -114,7 +99,7 @@ class _TicketingState extends State<Ticketing> {
   void _delete(BuildContext context,Ticket ticket) async{
     int result = await databaseHelper.deleteTicket(ticket.id);
     if (result!=0){
-      _showSnackBar(context,'Node deleted succesfully');
+      _showSnackBar(context,'Item(s) deleted succesfully');
       updateListView();
     }
   }
@@ -160,7 +145,7 @@ class _TicketingState extends State<Ticketing> {
               },
             ),
             onTap:(){
-              navigateToDetail(this.ticketList[position],'Edit Details');
+              navigateToDetail(this.ticketList[position],'Edit Details',widget.merchantId);
              // debugPrint('pressed tile');
               //Navigator.pushNamed(context, TicketingDetail.routeName,arguments: 'Edit Details');
 

@@ -5,20 +5,28 @@ import 'employeeDetails.dart';
 import 'productDetails.dart';
 import 'ticketing.dart';
 import 'categoryDetails.dart';
+import 'utils/database_helper.dart';
 class Menu extends StatelessWidget {
   static const String routeName = "/menu";
   //final String organisation;
+  final String organization;
   final String username;
+  final String name;
   final String merchantId;
   final String designation;
-  Menu({this.username,this.merchantId,this.designation});
+  Menu({this.username,this.name,this.merchantId,this.designation,this.organization});
+
+  DatabaseHelper databaseHelper = new DatabaseHelper();
+  void truncate() async{
+    int result = await databaseHelper.truncateTicketList();
+  }
 
   @override
   Widget build(BuildContext context) {
     if (designation.compareTo('Manager')==0 ){
       return Scaffold(
         appBar: new AppBar(
-          title: new Text('Welcome $username',
+          title: new Text('$organization POS',
             style: new TextStyle(
               fontSize: 15.0,
             ),),
@@ -29,7 +37,7 @@ class Menu extends StatelessWidget {
           child: new ListView(
             children: <Widget>[
               new UserAccountsDrawerHeader(
-                accountName: new Text("$username"),
+                accountName: new Text("$name"),
                 accountEmail: new Text("$designation"),
                 currentAccountPicture: new CircleAvatar(
                   backgroundColor: Colors.white,
@@ -87,7 +95,15 @@ class Menu extends StatelessWidget {
                   trailing: new Icon(Icons.add_shopping_cart),
                   onTap: () {
                     Navigator.of(context).pop();
-                    Navigator.of(context).pushNamed(Ticketing.routeName);
+                   // Navigator.of(context).pushNamed(Ticketing.routeName);
+                    Navigator.push(context, new MaterialPageRoute(
+                        builder: (context) {
+                          return Ticketing(
+                            title: "Employee details", merchantId: merchantId,);
+                        }
+                    ));
+
+
                   }
               ),
               new Divider(),
@@ -104,6 +120,7 @@ class Menu extends StatelessWidget {
                 title: new Text('Logout'),
                 trailing: new Icon(Icons.power_settings_new),
                 onTap: () {
+                  truncate();
                   Navigator.of(context).pushNamed(PosHome.routeName);
                 },
               ),
@@ -168,7 +185,7 @@ class Menu extends StatelessWidget {
 
       return Scaffold(
         appBar: new AppBar(
-          title: new Text('Welcome $username',
+          title: new Text('$organization POS',
             style: new TextStyle(
               fontSize: 15.0,
             ),),
@@ -179,7 +196,7 @@ class Menu extends StatelessWidget {
           child: new ListView(
             children: <Widget>[
               new UserAccountsDrawerHeader(
-                accountName: new Text("$username"),
+                accountName: new Text("$name"),
                 accountEmail: new Text("$designation"),
                 currentAccountPicture: new CircleAvatar(
                   backgroundColor: Colors.white,
@@ -217,7 +234,13 @@ class Menu extends StatelessWidget {
                   trailing: new Icon(Icons.add_shopping_cart),
                   onTap: () {
                     Navigator.of(context).pop();
-                    Navigator.of(context).pushNamed(Ticketing.routeName);
+                    //Navigator.of(context).pushNamed(Ticketing.routeName);
+                    Navigator.push(context, new MaterialPageRoute(
+                        builder: (context) {
+                          return Ticketing(
+                            title: "Employee details", merchantId: merchantId,);
+                        }
+                    ));
                   }
               ),
               new Divider(),
@@ -236,8 +259,9 @@ class Menu extends StatelessWidget {
                 trailing: new Icon(Icons.power_settings_new),
                 onTap: () {
                   //Navigator.of(context).pushNamed(PosHome.routeName);
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
+                  truncate();;
+                  Navigator.of(context).pushNamed(PosHome.routeName);
+
                 },
               ),
 

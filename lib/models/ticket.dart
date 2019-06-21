@@ -5,16 +5,16 @@ class Ticket{
   String _productname;
   int _productid;
   int _quantity;
-  int _rate;
-  int _subtotal;
+  double _rate;
+  double _subtotal;
   String _date;
   Ticket(this._productname,this._productid,this._quantity,this._rate,this._subtotal,this._date);
   Ticket.withId(this._id,this._productid,this._productname,this._quantity,this._rate,this._subtotal,this._date);
   int get id=>_id;
   String get productname=>_productname;
   String get date => _date;
-  int get rate=>_rate;
-  int get subtotal=>_subtotal;
+  double get rate=>_rate;
+  double get subtotal=>_subtotal;
   int get quantity=>_quantity;
 
   set productname(String newProductname){
@@ -23,7 +23,7 @@ class Ticket{
   set date(String newDate){
     this._date=newDate;
   }
-  set rate(int newRate){
+  set rate(double newRate){
     this._rate=newRate;
   }
   set productid(int newproductid){
@@ -32,7 +32,7 @@ class Ticket{
   set id(int newId){
     this._id=newId;
   }
-  set subtotal(int newsubtotal){
+  set subtotal(double newsubtotal){
     this._subtotal=newsubtotal;
   }
   set quantity(int newquantity){
@@ -63,7 +63,6 @@ class Ticket{
     this._rate=map['rate'];
     this._productname=map['productname'];
   }
-
 
 
 

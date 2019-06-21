@@ -7,7 +7,7 @@ import '../models/ticket.dart';
 class DatabaseHelper{
   static DatabaseHelper _databaaseHelper; //singleton dbhelper
   static Database _database;
-  String ticketTable ='ticket_table';
+  String ticketTable ='ticket_table_2';
   String colId='id';
   String colProductId ='productid';
   String colProductName ='productname';
@@ -31,7 +31,7 @@ class DatabaseHelper{
 
   Future<Database> initialiseDatabase() async{
     final directory= await providerpath.getApplicationDocumentsDirectory();
-    String path = directory.path + 'tickets.db';
+    String path = directory.path + 'tickets2.db';
     //create db at this path
     var ticketsDatabase = openDatabase(path,version: 1,onCreate: _createDb );
     return ticketsDatabase;
@@ -39,7 +39,7 @@ class DatabaseHelper{
 
   void _createDb(Database db,int newVersion) async{
     await db.execute('CREATE TABLE $ticketTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colProductName TEXT, $colQuantity INTEGER,'
-         '$colProductId INTEGER, $colRate INTEGER,$colSubTotal INTEGER,$colDate TEXT)');
+         '$colProductId INTEGER, $colRate REAL,$colSubTotal REAL,$colDate TEXT)');
 
   }
   //FETCHing dta from db
@@ -83,5 +83,11 @@ class DatabaseHelper{
       ticketList.add(Ticket.fromMapObject(ticketMapList[i]));
     }
     return ticketList;
+  }
+
+  //TRUNCATE
+  Future<int> truncateTicketList() async{
+    Database db = await this.database;
+    var result = db.rawQuery("DELETE FROM $ticketTable");
   }
 }

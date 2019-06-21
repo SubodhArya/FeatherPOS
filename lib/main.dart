@@ -135,7 +135,7 @@ class _PosHomeState extends State<PosHome> {
       _merchantID=ret['merchantId'].toString();
       Navigator.push(context, new MaterialPageRoute(
           builder: (context){
-            return Menu(username:_username,merchantId: _merchantID,designation:ret['designation']);
+            return Menu(username:_username,merchantId: _merchantID,designation:ret['designation'],organization: ret['organization'],name: ret['name'],);
           }
       ));
       formKey.currentState.reset();

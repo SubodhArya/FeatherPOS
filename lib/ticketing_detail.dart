@@ -1,14 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:poslogin/models/ticketJson.dart';
 import 'models/ticket.dart';
 import 'utils/database_helper.dart';
-import 'package:sqflite/sqflite.dart';
-import 'dart:async';
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'models/ticketJson.dart';
 class TicketingDetail extends StatefulWidget {
   final Ticket ticket;
   final String title;
-  TicketingDetail({this.ticket,this.title});
+  final String merchantId;
+  TicketingDetail({this.ticket,this.title,this.merchantId});
   static const String routeName = "/ticketingdetail";
   @override
   _TicketingDetailState createState() => _TicketingDetailState(
@@ -24,15 +28,72 @@ class _TicketingDetailState extends State<TicketingDetail> {
   Ticket ticket;
   _TicketingDetailState(this.ticket,this.appBarTitle);
 
-  int quantity;
+  int quantity=1;
   TextEditingController  productController = TextEditingController();
   TextEditingController  rateController = TextEditingController();
   TextEditingController  subtotalController = TextEditingController();
+  bool loading = true;
+  static List<TicketJson> tickets = new List<TicketJson>();
+  AutoCompleteTextField searchTextField;
+  SimpleAutoCompleteTextField textField;
+  GlobalKey<AutoCompleteTextFieldState<TicketJson>> key = new GlobalKey();
+  GlobalKey<AutoCompleteTextFieldState<TicketJson>> key1= new GlobalKey();
+  TicketJson selectedTicketJson;
+  void getAllProductDetails(String merchantID) async {
+    //String apiurl='https://jsonplaceholder.typicode.com/posts';
+    String apiurl= 'https://webapplication220190616025624.azurewebsites.net/Product/AllProduct/$merchantID';
+    http.Response response= await http.get(apiurl,  headers: {
+      'Content-type' : 'application/json',
+      'Accept': 'application/json',
+    });
+    if (response.statusCode == 200) {
+       tickets= loadTickets((response.body));
+       setState(() {
+         loading=false;
+       });
+       print(tickets.length);
+       print(tickets[0].rate);
+    }
+    else{
+      print("error getting users");
+    }
+  }
+
+ static List<TicketJson> loadTickets (String jsonString){
+    print("json string $jsonString");
+
+    final parsed = json.decode(jsonString).cast<Map<String,dynamic>>();
+    //print(parsed.map<Ticket>((json)=>Ticket.fromMapObject(json)).toList());
+    return parsed.map<TicketJson>((json)=>TicketJson.fromJson(json)).toList();
+
+
+ }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getAllProductDetails(widget.merchantId);
+    super.initState();
+  }
+
+  Widget that(TicketJson t){
+
+    return Padding(
+      child: ListTile(
+        title: Text(t.productName) ,
+        trailing: new Text("${t.rate}"),
+      ),
+      padding:EdgeInsets.all(8.0)
+    ) ;
+
+
+
+  }
   @override
   Widget build(BuildContext context) {
     productController.text=ticket.productname;
     rateController.text='${ticket.rate}';
-
+    subtotalController.text = '${ticket.subtotal}';
 
     TextStyle textStyle = Theme.of(context).textTheme.title;
     return WillPopScope(
@@ -49,29 +110,71 @@ class _TicketingDetailState extends State<TicketingDetail> {
             moveToLastScreen();
           },
         ),
-      ),
+      ), //here
+
       body: Padding(
         padding: EdgeInsets.only(top: 15.0,left: 10.0,right: 10.0),
         child: ListView(
           children: <Widget>[
             new Padding(
               padding: EdgeInsets.only(top: 15.0,bottom: 15.0),
-              child: TextField(
-                controller: productController,
-                style: textStyle,
-                onChanged: (valueText){
-                  debugPrint('Something has been changed in text');
-                  updateProductName();
-                },
-                decoration: InputDecoration(
-                  labelText: 'Product Name',
-                  labelStyle: textStyle,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  )
-
-                ),
               ),
+               loading?LinearProgressIndicator():
+               searchTextField= AutoCompleteTextField<TicketJson>(
+                key: key,
+                 suggestions: tickets ,
+                 style: TextStyle(color:Colors.black , fontSize: 16.0),
+                 decoration: InputDecoration(
+                   contentPadding: EdgeInsets.fromLTRB(10.0,30.0,10.0,20.0),
+                   hintText: "Search Product",
+                   hintStyle: TextStyle(color: Colors.black),
+                   suffixIcon: new Icon(Icons.search)
+                 ),
+                itemFilter: (item,query){
+                  return item.productName.toLowerCase().startsWith(query.toLowerCase());
+                },
+                 itemSorter: (a,b){
+                   return a.productName.compareTo(b.productName);
+                 },
+
+                 itemSubmitted: (item){
+                  print("calling");
+                  selectedTicketJson = item;
+                  setState(() {
+                    quantity = ticket.quantity;
+                    ticket.productname=selectedTicketJson.productName;
+                    ticket.rate=selectedTicketJson.rate;
+                    ticket.subtotal = selectedTicketJson.rate * quantity;
+                    //ticket.subtotal= quantity * ticket.rate;
+                  });
+
+                 },
+                 itemBuilder: (context,item){
+                   //ui for autocomplete
+                   return that(item);
+                 },
+               ),
+           // ),
+
+            new Padding(
+               padding: EdgeInsets.only(top: 15.0,bottom: 15.0),
+                child: TextField(
+                         controller: productController,
+                        style: textStyle,
+                        onChanged: (valueText){
+                           updateProductName();
+                          debugPrint('Something has been changed in text');
+
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Product Name',
+                          labelStyle: textStyle,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          )
+
+                        ),
+                      ),
             ),
             ListTile(
               title: DropdownButton(
@@ -85,6 +188,9 @@ class _TicketingDetailState extends State<TicketingDetail> {
                 value: getQuantity(ticket.quantity),
                 onChanged: (valueSelected){
                   setState(() {
+                    quantity=valueSelected;
+                    ticket.quantity=quantity;
+                    ticket.subtotal= ticket.rate * quantity;
                     debugPrint('User Selected $valueSelected');
                     updateQuantityAsInt(valueSelected);
                   });
@@ -97,8 +203,10 @@ class _TicketingDetailState extends State<TicketingDetail> {
                 controller: rateController,
                 style: textStyle,
                 onChanged: (valueText){
-                  debugPrint('Something has been changed in text');
                   updateRate();
+                  ticket.subtotal= selectedTicketJson.rate * quantity;
+                  debugPrint('Something has been changed in text');
+                  //updateRate();
                 },
                 decoration: InputDecoration(
                     labelText: 'Rs. Rate/unit',
@@ -169,7 +277,7 @@ class _TicketingDetailState extends State<TicketingDetail> {
           ],
         ),
 
-      ),
+      ),  // body ends
     ));
   }
   moveToLastScreen(){
@@ -186,13 +294,16 @@ class _TicketingDetailState extends State<TicketingDetail> {
   }
 
   void updateProductName(){
+   // productController.text= selectedTicketJson.productName;
     ticket.productname=productController.text;
   }
   void updateRate(){
-    ticket.rate= int.parse(rateController.text);
+    //ticket.rate=  getPriceFromTicketJsonList(tickets);
+    //rateController.text=selectedTicketJson.rate.toString();
+    ticket.rate = selectedTicketJson.rate;
   }
   void updatesubtotal(){
-    ticket.subtotal= int.parse(subtotalController.text);
+    ticket.subtotal= getSubTotal();
   }
   //to save in a db
 
@@ -243,4 +354,21 @@ class _TicketingDetailState extends State<TicketingDetail> {
         builder: (_)=>alertDialog
     );
   }
+
+  double getPriceFromTicketJsonList(List<TicketJson> ticketsjsonList){
+     for (var i in ticketsjsonList){
+       if(i.productName.compareTo(productController.text)==0){
+         print(i.rate);
+         return i.rate;
+       }
+    }
+     return 0.0;
+  }
+
+  double getSubTotal(){
+
+     return quantity*selectedTicketJson.rate;
+  }
+
 }
+
