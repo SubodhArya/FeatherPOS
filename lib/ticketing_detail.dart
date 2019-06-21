@@ -51,8 +51,8 @@ class _TicketingDetailState extends State<TicketingDetail> {
        setState(() {
          loading=false;
        });
-       print(tickets.length);
-       print(tickets[0].rate);
+      // print(tickets.length);
+       //print(tickets[0].rate);
     }
     else{
       print("error getting users");

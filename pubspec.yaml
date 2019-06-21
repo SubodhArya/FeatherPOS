@@ -17,6 +17,8 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  mailer: ^2.5.0
+  smtp: ^1.0.0+1
   autocomplete_textfield: ^1.6.6
   flutter_launcher_icons: ^0.7.2
   http: ^0.12.0+2

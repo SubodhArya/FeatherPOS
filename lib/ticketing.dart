@@ -16,9 +16,9 @@ class Ticketing extends StatefulWidget {
   final String title;
   final String merchantId;
   final String employeeId;
+  final String organization;
 
-
-  Ticketing({this.title,this.merchantId,this.employeeId});
+  Ticketing({this.title,this.merchantId,this.employeeId,this.organization});
   @override
   _TicketingState createState() => _TicketingState();
 }
@@ -71,7 +71,8 @@ class _TicketingState extends State<Ticketing> {
                       builder: (context) {
                         return Billing(merchantId: widget.merchantId,
                           employeeId: widget.employeeId,
-                          ticketList: ticketList,);
+                          ticketList: ticketList,
+                        organization: widget.organization,);
                       }
                   ));
                   if (result == true) {

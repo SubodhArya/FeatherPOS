@@ -100,7 +100,7 @@ class Menu extends StatelessWidget {
                     Navigator.push(context, new MaterialPageRoute(
                         builder: (context) {
                           return Ticketing(
-                            title: "Employee details", merchantId: merchantId,employeeId: employeeId,);
+                            title: "Employee details", merchantId: merchantId,employeeId: employeeId,organization: organization);
                         }
                     ));
 
@@ -239,7 +239,7 @@ class Menu extends StatelessWidget {
                     Navigator.push(context, new MaterialPageRoute(
                         builder: (context) {
                           return Ticketing(
-                            title: "Employee details", merchantId: merchantId,);
+                            title: "Employee details", merchantId: merchantId,organization: organization,);
                         }
                     ));
                   }
