@@ -45,7 +45,7 @@ class _RegistrationState extends State<Registration> {
 
       Map<String,dynamic> ret= await registerAPI(context,_name,_organisation,_email,_address,_phone,_username,_password);
       print(ret);
-      if (ret['id'] != null) {
+      if (ret != null) {
         setState(() {
           _progressBarActive = false;
         });
@@ -348,6 +348,7 @@ Future<Map<String,dynamic>> registerAPI(BuildContext context,String name,String 
         'Accept': 'application/json',
       }
   );
+  print(response.statusCode);
   if (response.statusCode == 200) {
     return json.decode(response.body);
 

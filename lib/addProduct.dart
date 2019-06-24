@@ -27,9 +27,9 @@ class AddProduct extends StatefulWidget {
 
 class _AddProductState extends State<AddProduct> {
   String _productName;
-  int _unitCost;
-  int _sellingPrice;
-  int _comission;
+  double _unitCost;
+  double _sellingPrice;
+  double _comission;
   int _rating;
   String _modifiedUser;
   int _quantityRemaining;
@@ -136,7 +136,7 @@ class _AddProductState extends State<AddProduct> {
                   }
                 },
                 keyboardType: TextInputType.number,
-                onSaved: (val)=>_unitCost=int.parse(val),
+                onSaved: (val)=>_unitCost=double.parse(val),
                 style: new TextStyle(
                   fontFamily: "Poppins",
                 ),
@@ -166,7 +166,7 @@ class _AddProductState extends State<AddProduct> {
                 style: new TextStyle(
                   fontFamily: "Poppins",
                 ),
-                onSaved: (val)=>_sellingPrice=int.parse(val),
+                onSaved: (val)=>_sellingPrice=double.parse(val),
               ),
 
                Padding(
@@ -195,7 +195,7 @@ class _AddProductState extends State<AddProduct> {
                 style: new TextStyle(
                   fontFamily: "Poppins",
                 ),
-                onSaved: (val)=>_comission=int.parse(val),
+                onSaved: (val)=>_comission=double.parse(val),
               ),
 
                Padding(
@@ -249,7 +249,7 @@ class _AddProductState extends State<AddProduct> {
                     return null;
                   }
                 },
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.number,
                 style: new TextStyle(
                   fontFamily: "Poppins",
                 ),
@@ -331,7 +331,7 @@ class _AddProductState extends State<AddProduct> {
   }
 }
 
-Future<Map<String,dynamic>> addProductAPI(BuildContext context,String productName,int unitCost, int sellingPrice, int comission,int rating,String modifiedUser ,int quantityRemaining,int categoryId,String merchantID) async {
+Future<Map<String,dynamic>> addProductAPI(BuildContext context,String productName,double unitCost, double sellingPrice, double comission,int rating,String modifiedUser ,int quantityRemaining,int categoryId,String merchantID) async {
   //String apiurl='https://jsonplaceholder.typicode.com/posts';
   String apiurl= 'https://webapplication220190616025624.azurewebsites.net/Product/AddProduct/${merchantID}';
   http.Response response= await http.post(

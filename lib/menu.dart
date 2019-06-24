@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:poslogin/main.dart';
+import 'package:poslogin/reports.dart';
 import 'customerDetails.dart';
 import 'employeeDetails.dart';
 import 'productDetails.dart';
@@ -106,16 +107,22 @@ class Menu extends StatelessWidget {
 
 
                   }
-              ),/* TO BE IMPLEMENTED FOR CUSTOMER DETAILS
+              ),
               new Divider(),
               new ListTile(
-                  title: new Text('Customer Details'),
-                  trailing: new Icon(Icons.person),
+                  title: new Text('Reporting Details'),
+                  trailing: new Icon(Icons.assessment),
                   onTap: () {
                     Navigator.of(context).pop();
-                    Navigator.of(context).pushNamed(CustomerDetails.routeName);
+                   // Navigator.of(context).pushNamed(CustomerDetails.routeName);
+                    Navigator.push(context, new MaterialPageRoute(
+                        builder: (context) {
+                          return ReportDate(merchantId: merchantId,);
+                        }
+                    ));
+
                   }
-              ),*/
+              ),
               new Divider(),
               new ListTile(
                 title: new Text('Logout'),
@@ -149,7 +156,7 @@ class Menu extends StatelessWidget {
                 child: new Text("Use the Menu icon for Navigation "),
 
                 onPressed: (){},
-                color: Colors.amberAccent,
+                color: Colors.white30,
               ),
             ),
 
@@ -289,7 +296,7 @@ class Menu extends StatelessWidget {
                 child: new Text("Use the Menu icon for Navigation "),
 
                 onPressed: (){},
-                color: Colors.grey,
+                color: Colors.white30,
               ),
             ),
 

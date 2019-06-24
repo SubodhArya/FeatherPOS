@@ -144,6 +144,7 @@ class _TicketingDetailState extends State<TicketingDetail> {
                     quantity = ticket.quantity;
                     ticket.productname=selectedTicketJson.productName;
                     ticket.rate=selectedTicketJson.rate;
+                    ticket.productid = selectedTicketJson.productId;
                     ticket.subtotal = selectedTicketJson.rate * quantity;
                     //ticket.subtotal= quantity * ticket.rate;
                   });
@@ -330,7 +331,7 @@ class _TicketingDetailState extends State<TicketingDetail> {
   void _save() async{
     if(ticket.productname.length>1) {
       moveToLastScreen();
-      ticket.productid = selectedTicketJson.productId;
+      //ticket.productid = selectedTicketJson.productId;
       ticket.date = DateFormat.yMMMd().format(DateTime.now());
       int result;
       if (ticket.id != null) { //update
